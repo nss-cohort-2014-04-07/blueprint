@@ -12,7 +12,6 @@ var db = traceur.require(__dirname + '/../../helpers/db.js');
 var factory = traceur.require(__dirname + '/../../helpers/factory.js');
 
 var User;
-var sue;
 
 describe('User', function(){
   before(function(done){
@@ -73,7 +72,7 @@ describe('User', function(){
   });
 
   describe('.findById', function(){
-    it('should successfully find a user', function(done){
+    it('should successfully find a user - String', function(done){
       User.findById('0123456789abcdef01234568', function(u){
         expect(u).to.be.instanceof(User);
         expect(u.email).to.equal('sue@aol.com');
@@ -81,8 +80,23 @@ describe('User', function(){
       });
     });
 
-    it('should NOT successfully find a user', function(done){
+    it('should successfully find a user - object id', function(done){
+      User.findById(Mongo.ObjectID('0123456789abcdef01234568'), function(u){
+        expect(u).to.be.instanceof(User);
+        expect(u.email).to.equal('sue@aol.com');
+        done();
+      });
+    });
+
+    it('should NOT successfully find a user - Bad Id', function(done){
       User.findById('not an id', function(u){
+        expect(u).to.be.null;
+        done();
+      });
+    });
+
+    it('should NOT successfully find a user - NULL', function(done){
+      User.findById(null, function(u){
         expect(u).to.be.null;
         done();
       });
