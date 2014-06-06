@@ -13,7 +13,14 @@ class Floor{
     floor.name = obj.name[0];
     floor.rate = parseFloat(obj.rate[0]);
     floor.photo = '/img/flooring/' + obj.photo[0].originalFilename;
-    fs.renameSync(obj.photo[0].path, __dirname + '/../static/img/flooring/' + obj.photo[0].originalFilename);
+
+    var path = obj.photo[0].path;
+
+    if(path[0] !== '/'){
+      path = __dirname + '/' + path;
+    }
+    
+    fs.renameSync(path, __dirname + '/../static/img/flooring/' + obj.photo[0].originalFilename);
     floorCollection.save(floor, ()=>fn(floor));
   }
 

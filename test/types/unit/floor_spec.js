@@ -40,7 +40,7 @@ describe('Floor', function(){
   });
 
   describe('.create', function(){
-    it('should create a floor', function(done){
+    it('should create a floor - absolute photo path', function(done){
       var fields = {name:['tile'], rate:['4.35']};
       var files = {photo:[{originalFilename:'tile1-DELETE.png', path:__dirname + '/../../fixtures/copy/tile1-DELETE.png', size:10}]};
       fields.photo = files.photo;
@@ -52,6 +52,18 @@ describe('Floor', function(){
         expect(floor.name).to.equal('tile');
         expect(floor.photo).to.equal('/img/flooring/tile1-DELETE.png');
 
+        var imgExists = fs.existsSync(__dirname + '/../../../app/static/img/flooring/tile1-DELETE.png');
+        expect(imgExists).to.be.true;
+        done();
+      });
+    });
+
+    it('should create a floor - relative photo path', function(done){
+      var fields = {name:['tile'], rate:['4.35']};
+      var files = {photo:[{originalFilename:'tile1-DELETE.png', path:'../../test/fixtures/copy/tile1-DELETE.png', size:10}]};
+      fields.photo = files.photo;
+
+      Floor.create(fields, function(floor){
         var imgExists = fs.existsSync(__dirname + '/../../../app/static/img/flooring/tile1-DELETE.png');
         expect(imgExists).to.be.true;
         done();
