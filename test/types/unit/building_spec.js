@@ -14,6 +14,7 @@ var factory = traceur.require(__dirname + '/../../helpers/factory.js');
 var User;
 var Location;
 var Building;
+var Room;
 
 describe('User', function(){
   before(function(done){
@@ -21,6 +22,7 @@ describe('User', function(){
       User = traceur.require(__dirname + '/../../../app/models/user.js');
       Location = traceur.require(__dirname + '/../../../app/models/location.js');
       Building = traceur.require(__dirname + '/../../../app/models/building.js');
+      Room = traceur.require(__dirname + '/../../../app/models/room.js');
       done();
     });
   });
@@ -50,6 +52,7 @@ describe('User', function(){
         expect(building.name).to.equal('moonbase');
         expect(building.x).to.deep.equal(100);
         expect(building.y).to.deep.equal(200);
+        expect(building.rooms).to.have.length(0);
         expect(building.locationId).to.deep.equal(Mongo.ObjectID('a123456789abcdef01234567'));
         expect(building.userId).to.deep.equal(Mongo.ObjectID('0123456789abcdef01234567'));
         done();
@@ -73,6 +76,25 @@ describe('User', function(){
         expect(building).to.be.instanceof(Building);
         expect(building.name).to.equal('castle');
         done();
+      });
+    });
+  });
+
+  describe('#addRoom', function(){
+    it('should add a room to rooms array', function(done){
+      Building.findById('c123456789abcdef01234567', function(bldg){
+        var body = {'name':'livingroom', 'beginX':'20', 'beginY':'30', 'endX':'50', 'endY':'60', 'floorId':'b123456789abcdef01234568'};
+
+        bldg.addRoom(body, function(b){
+          expect(b.rooms).to.have.length(1);
+          expect(b.rooms[0].name).to.equal('livingroom');
+          expect(b.rooms[0].begin.x).to.deep.equal(20);
+          expect(b.rooms[0].begin.y).to.deep.equal(30);
+          expect(b.rooms[0].end.x).to.deep.equal(50);
+          expect(b.rooms[0].end.y).to.deep.equal(60);
+          expect(b.rooms[0].floorId).to.be.instanceof(Mongo.ObjectID);
+          done();
+        });
       });
     });
   });
