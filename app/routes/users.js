@@ -34,13 +34,22 @@ exports.logout = (req, res)=>{
   res.redirect('/');
 };
 
-exports.bounce = (req, res, next)=>{
+exports.lookup = (req, res, next)=>{
   User.findById(req.session.userId, user=>{
     if(user){
       res.locals.user = user;
-      next();
     }else{
-      res.redirect('/');
+      res.locals.user = null;
     }
+
+    next();
   });
+};
+
+exports.bounce = (req, res, next)=>{
+  if(res.locals.user){
+    next();
+  }else{
+    res.redirect('/');
+  }
 };

@@ -20,6 +20,7 @@ function load(app, fn){
   var users = traceur.require(__dirname + '/../routes/users.js');
   var buildings = traceur.require(__dirname + '/../routes/buildings.js');
 
+  app.all('*', users.lookup);
   app.get('/', dbg, home.index);
   app.get('/locations/new', dbg, locations.new);
   app.post('/locations', dbg, locations.create);
