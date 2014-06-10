@@ -33,3 +33,14 @@ exports.logout = (req, res)=>{
   req.session = null;
   res.redirect('/');
 };
+
+exports.bounce = (req, res, next)=>{
+  User.findById(req.session.userId, user=>{
+    if(user){
+      res.locals.user = user;
+      next();
+    }else{
+      res.redirect('/');
+    }
+  });
+};

@@ -5,7 +5,6 @@
 
 process.env.DBNAME = 'blueprint-test';
 
-// var cp = require('child_process');
 var expect = require('chai').expect;
 var traceur = require('traceur');
 var db = traceur.require(__dirname + '/../../helpers/db.js');
