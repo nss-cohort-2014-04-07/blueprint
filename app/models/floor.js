@@ -19,7 +19,7 @@ class Floor{
     if(path[0] !== '/'){
       path = __dirname + '/' + path;
     }
-    
+
     fs.renameSync(path, __dirname + '/../static/img/flooring/' + obj.photo[0].originalFilename);
     floorCollection.save(floor, ()=>fn(floor));
   }

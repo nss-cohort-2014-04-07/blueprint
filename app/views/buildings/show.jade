@@ -5,13 +5,15 @@ block content
   h2 $#{rate.toFixed(2)}
 
   button#create-room Create Room
+  button#save-room Save Room
+  input#name(type='text')
 
   select#floors
     option Select a Floor
     each floor in floors
       option(data-img=floor.photo, value=floor._id)= floor.name
 
-  table#building
+  table#building(data-id=bldg._id.toString())
     tbody
       - for(var y=0; y < bldg.y; y++)
           tr

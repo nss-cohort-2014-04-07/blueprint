@@ -9,6 +9,24 @@
 
   function init(){
     $('#create-room').click(createRoom);
+    $('#save-room').click(saveRoom);
+  }
+
+  function saveRoom(){
+    var id = $('#building').data('id');
+    var name = $('#name').val();
+    var floorId = $('#floors').val();
+
+    $.ajax({
+      url: `/buildings/${id}/rooms`,
+      type: 'put',
+      data: {name:name, begin:begin, end:end, floorId:floorId},
+      dataType: 'json',
+      success: data => {
+        console.log('here is the data');
+        console.log(data);
+      }
+    });
   }
 
   function createRoom(){

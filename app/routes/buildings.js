@@ -24,3 +24,11 @@ exports.show = (req, res)=>{
     });
   });
 };
+
+exports.addRoom = (req, res)=>{
+  Building.findById(req.params.id, bldg=>{
+    bldg.addRoom(req.body, ()=>{
+      bldg.cost(rate=>res.send({cost:rate}));
+    });
+  });
+};

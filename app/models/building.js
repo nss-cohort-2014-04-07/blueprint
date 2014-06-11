@@ -3,7 +3,9 @@ var traceur = require('traceur');
 var Base = traceur.require(__dirname + '/base.js');
 var Room = traceur.require(__dirname + '/room.js');
 var Location = traceur.require(__dirname + '/location.js');
+var Floor = traceur.require(__dirname + '/floor.js');
 var Mongo = require('mongodb');
+var async = require('async');
 
 class Building{
   static create(obj, fn){
@@ -35,9 +37,26 @@ class Building{
   cost(fn){
     Location.findById(this.locationId, loc=>{
       var rate = loc.rate * this.x * this.y;
-      fn(rate);
+
+      async.map(this.rooms, transformRoom, (e, rooms)=>{
+        rate += rooms.reduce((acc, room)=>{
+          var sqft = (room.end.x + 1 - room.begin.x) * (room.end.y + 1 - room.begin.y);
+          return sqft * room.floor.rate;
+        }, 0);
+        fn(rate);
+      });
+
     });
   }
+}
+
+function transformRoom(room, fn){
+  'use strict';
+
+  Floor.findById(room.floorId, floor=>{
+    room.floor = floor;
+    fn(null, room);
+  });
 }
 
 module.exports = Building;
