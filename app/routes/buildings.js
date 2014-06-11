@@ -3,6 +3,7 @@
 var traceur = require('traceur');
 var Building = traceur.require(__dirname + '/../models/building.js');
 var Location = traceur.require(__dirname + '/../models/location.js');
+var Floor = traceur.require(__dirname + '/../models/floor.js');
 
 exports.new = (req, res)=>{
   Location.findAll(locations=>{
@@ -15,9 +16,11 @@ exports.create = (req, res)=>{
 };
 
 exports.show = (req, res)=>{
-  Building.findById(req.params.id, bldg=>{
-    bldg.cost(rate=>{
-      res.render('buildings/show', {bldg:bldg, rate:rate, title:bldg.name});
+  Floor.findAll(floors=>{
+    Building.findById(req.params.id, bldg=>{
+      bldg.cost(rate=>{
+        res.render('buildings/show', {floors:floors, bldg:bldg, rate:rate, title:bldg.name});
+      });
     });
   });
 };

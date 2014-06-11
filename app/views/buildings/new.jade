@@ -7,7 +7,7 @@ block content
     input(type='text', name='name')
     input(type='text', name='x')
     input(type='text', name='y')
-    select
+    select(name='locationId')
       option Select a Location
       each location in locations
         option(value=location._id)= location.name
