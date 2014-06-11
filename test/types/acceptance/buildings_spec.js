@@ -150,11 +150,11 @@ describe('floors', function(){
       it('should add a room to a building', function(done){
         request(app)
         .put('/buildings/c123456789abcdef01234567/rooms')
-        .send({name:'bathroom', beginX:'0', beginY:'5', endX:'20', endY:'30', floorId:'b123456789abcdef01234568'})
+        .send({name:'bathroom', beginX:'0', beginY:'0', endX:'4', endY:'0', floorId:'b123456789abcdef01234568'})
         .set('cookie', cookie)
         .end(function(err, res){
           expect(res.status).to.equal(200);
-          expect(res.body).to.deep.equal({cost:2105});
+          expect(res.body).to.deep.equal({cost:125});
           done();
         });
       });

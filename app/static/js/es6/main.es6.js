@@ -1,4 +1,5 @@
 /* jshint unused:false */
+/* global building */
 
 (function(){
   'use strict';
@@ -10,6 +11,17 @@
   function init(){
     $('#create-room').click(createRoom);
     $('#save-room').click(saveRoom);
+    paintBuilding();
+  }
+
+  function paintBuilding(){
+    building.rooms.forEach(r=>{
+      for(var y=r.begin.y; y <= r.end.y; y++){
+        for(var x=r.begin.x; x <= r.end.x; x++){
+          $(`.cell[data-x=${x}][data-y=${y}]`).css('background-image', `url(${r.floor.photo})`);
+        }
+      }
+    });
   }
 
   function saveRoom(){
@@ -20,7 +32,7 @@
     $.ajax({
       url: `/buildings/${id}/rooms`,
       type: 'put',
-      data: {name:name, begin:begin, end:end, floorId:floorId},
+      data: {name:name, beginX:begin.x, beginY:begin.y, endX:end.x, endY:end.y, floorId:floorId},
       dataType: 'json',
       success: data => {
         console.log('here is the data');

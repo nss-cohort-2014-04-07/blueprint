@@ -19,3 +19,7 @@ block content
           tr
             - for(var x=0; x < bldg.x; x++)
                 td.cell(data-x=x, data-y=y)
+
+block scripts
+  script.
+    var building = !{JSON.stringify(bldg)};
